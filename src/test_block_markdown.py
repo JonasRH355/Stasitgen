@@ -1,18 +1,16 @@
 import unittest
-from block_markdown import markdown_to_blocks
+from block_markdown import *
 
 
 class TestMarkdownToHTML(unittest.TestCase):
     def test_markdown_to_blocks(self):
-        md = """
-This is **bolded** paragraph
+        md = """This is **bolded** paragraph
 
 This is another paragraph with _italic_ text and `code` here
 This is the same paragraph on a new line
 
 - This is a list
-- with items
-"""
+- with items"""
         blocks = markdown_to_blocks(md)
         self.assertEqual(
             blocks,
@@ -24,18 +22,13 @@ This is the same paragraph on a new line
         )
 
     def test_markdown_to_blocks_newlines(self):
-        md = """
-This is **bolded** paragraph
-
-
-
+        md = """This is **bolded** paragraph
 
 This is another paragraph with _italic_ text and `code` here
 This is the same paragraph on a new line
 
 - This is a list
-- with items
-"""
+- with items"""
         blocks = markdown_to_blocks(md)
         self.assertEqual(
             blocks,
@@ -45,6 +38,22 @@ This is the same paragraph on a new line
                 "- This is a list\n- with items",
             ],
         )
+
+    def test_block_to_block_types(self):
+        block = "# heading"
+        self.assertEqual(block_to_block_type(block), BlockType.H)
+        block = "```\ncode\n```"
+        self.assertEqual(block_to_block_type(block), BlockType.CODE)
+        block = "> quote\n> more quote"
+        self.assertEqual(block_to_block_type(block), BlockType.QUOTE)
+        block = "- list\n- items"
+        self.assertEqual(block_to_block_type(block), BlockType.ULIST)
+        block = "1. list\n2. items"
+        self.assertEqual(block_to_block_type(block), BlockType.OLIST)
+        block = "paragraph"
+        self.assertEqual(block_to_block_type(block), BlockType.P)
+
+
 
 
 if __name__ == "__main__":
