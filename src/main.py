@@ -15,10 +15,10 @@ def main():
         rmtree("./public")
     copy_files_recursive(dir_static, dir_public)
 
-    generate_page(
-        path.join(dir_content, "index.md"),
+    generate_pages_recursive(
+        dir_content,
         template_path,
-        path.join(dir_public, "index.html")
+        dir_public
     )
 
 
